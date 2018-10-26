@@ -205,7 +205,7 @@ static CGFloat itemMargin = 5;
     _previewButton.titleLabel.font = [UIFont systemFontOfSize:16];
     [_previewButton setTitle:tzImagePickerVc.previewBtnTitleStr forState:UIControlStateNormal];
     [_previewButton setTitle:tzImagePickerVc.previewBtnTitleStr forState:UIControlStateDisabled];
-    [_previewButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [_previewButton setTitleColor:[UIColor colorWithRed:48/255.0 green:48/255.0 blue:48/255.0 alpha:1] forState:UIControlStateNormal];
     [_previewButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateDisabled];
     _previewButton.enabled = tzImagePickerVc.selectedModels.count;
     
@@ -213,11 +213,11 @@ static CGFloat itemMargin = 5;
         _originalPhotoButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _originalPhotoButton.imageEdgeInsets = UIEdgeInsetsMake(0, [TZCommonTools isRightToLeftLayout] ? 10 : -10, 0, 0);
         [_originalPhotoButton addTarget:self action:@selector(originalPhotoButtonClick) forControlEvents:UIControlEventTouchUpInside];
-        _originalPhotoButton.titleLabel.font = [UIFont systemFontOfSize:16];
+        _originalPhotoButton.titleLabel.font = [UIFont systemFontOfSize:13];
         [_originalPhotoButton setTitle:tzImagePickerVc.fullImageBtnTitleStr forState:UIControlStateNormal];
         [_originalPhotoButton setTitle:tzImagePickerVc.fullImageBtnTitleStr forState:UIControlStateSelected];
-        [_originalPhotoButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
-        [_originalPhotoButton setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
+        [_originalPhotoButton setTitleColor:[UIColor colorWithRed:144.0/255.0 green:144.0/255.0 blue:144.0/255.0 alpha:1] forState:UIControlStateNormal];
+        [_originalPhotoButton setTitleColor:[UIColor colorWithRed:48.0/255.0 green:48.0/255.0 blue:48.0/255.0 alpha:1] forState:UIControlStateSelected];
         [_originalPhotoButton setImage:tzImagePickerVc.photoOriginDefImage forState:UIControlStateNormal];
         [_originalPhotoButton setImage:tzImagePickerVc.photoOriginSelImage forState:UIControlStateSelected];
         _originalPhotoButton.imageView.clipsToBounds = YES;
@@ -227,22 +227,29 @@ static CGFloat itemMargin = 5;
         
         _originalPhotoLabel = [[UILabel alloc] init];
         _originalPhotoLabel.textAlignment = NSTextAlignmentLeft;
-        _originalPhotoLabel.font = [UIFont systemFontOfSize:16];
-        _originalPhotoLabel.textColor = [UIColor blackColor];
+        _originalPhotoLabel.font = [UIFont systemFontOfSize:13];
+        _originalPhotoLabel.textColor = [UIColor colorWithRed:48.0/255.0 green:48.0/255.0 blue:48.0/255.0 alpha:1];
         if (_isSelectOriginalPhoto) [self getSelectedPhotoBytes];
     }
     
+    NSString *doneBtnTitle = [NSString stringWithFormat:@"%@(%ld)", tzImagePickerVc.doneBtnTitleStr, tzImagePickerVc.selectedModels.count];
     _doneButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _doneButton.titleLabel.font = [UIFont systemFontOfSize:16];
+    _doneButton.titleLabel.font = [UIFont systemFontOfSize:13];
+    _doneButton.layer.cornerRadius = 3;
     [_doneButton addTarget:self action:@selector(doneButtonClick) forControlEvents:UIControlEventTouchUpInside];
     [_doneButton setTitle:tzImagePickerVc.doneBtnTitleStr forState:UIControlStateNormal];
     [_doneButton setTitle:tzImagePickerVc.doneBtnTitleStr forState:UIControlStateDisabled];
     [_doneButton setTitleColor:tzImagePickerVc.oKButtonTitleColorNormal forState:UIControlStateNormal];
     [_doneButton setTitleColor:tzImagePickerVc.oKButtonTitleColorDisabled forState:UIControlStateDisabled];
     _doneButton.enabled = tzImagePickerVc.selectedModels.count || tzImagePickerVc.alwaysEnableDoneBtn;
+    if (_doneButton.enabled) {
+        _doneButton.backgroundColor = tzImagePickerVc.okButtonBackgroundColorNormal;
+    } else {
+        _doneButton.backgroundColor = tzImagePickerVc.okButtonBackgroundColorDisabled;
+    }
     
     _numberImageView = [[UIImageView alloc] initWithImage:tzImagePickerVc.photoNumberIconImage];
-    _numberImageView.hidden = tzImagePickerVc.selectedModels.count <= 0;
+    _numberImageView.hidden = YES;
     _numberImageView.clipsToBounds = YES;
     _numberImageView.contentMode = UIViewContentModeScaleAspectFit;
     _numberImageView.backgroundColor = [UIColor clearColor];
@@ -254,6 +261,7 @@ static CGFloat itemMargin = 5;
     _numberLabel.text = [NSString stringWithFormat:@"%zd",tzImagePickerVc.selectedModels.count];
     _numberLabel.hidden = tzImagePickerVc.selectedModels.count <= 0;
     _numberLabel.backgroundColor = [UIColor clearColor];
+    _numberLabel.hidden = YES;
     
     _divideLine = [[UIView alloc] init];
     CGFloat rgb2 = 222 / 255.0;
@@ -316,15 +324,22 @@ static CGFloat itemMargin = 5;
     if (!tzImagePickerVc.allowPreview) {
         previewWidth = 0.0;
     }
-    _previewButton.frame = CGRectMake(10, 3, previewWidth, 44);
+    _previewButton.frame = CGRectMake(15, 3, previewWidth, 44);
     _previewButton.tz_width = !tzImagePickerVc.showSelectBtn ? 0 : previewWidth;
     if (tzImagePickerVc.allowPickingOriginalPhoto) {
         CGFloat fullImageWidth = [tzImagePickerVc.fullImageBtnTitleStr boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX) options:NSStringDrawingUsesFontLeading attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:13]} context:nil].size.width;
-        _originalPhotoButton.frame = CGRectMake(CGRectGetMaxX(_previewButton.frame), 0, fullImageWidth + 56, 50);
+        _originalPhotoButton.frame = CGRectMake(CGRectGetMaxX(_previewButton.frame) + 15, 0, fullImageWidth + 56, 50);
         _originalPhotoLabel.frame = CGRectMake(fullImageWidth + 46, 0, 80, 50);
     }
     [_doneButton sizeToFit];
-    _doneButton.frame = CGRectMake(self.view.tz_width - _doneButton.tz_width - 12, 0, _doneButton.tz_width, 50);
+    CGSize doneBtnSize = _doneButton.frame.size;
+    if (doneBtnSize.width < 60) {
+        doneBtnSize.width = 60;
+    }
+    if (doneBtnSize.height < 30) {
+        doneBtnSize.height = 30;
+    }
+    _doneButton.frame = CGRectMake(self.view.tz_width - doneBtnSize.width - 15, 10, doneBtnSize.width, doneBtnSize.height);
     _numberImageView.frame = CGRectMake(_doneButton.tz_left - 24 - 5, 13, 24, 24);
     _numberLabel.frame = _numberImageView.frame;
     _divideLine.frame = CGRectMake(0, 0, self.view.tz_width, 1);
@@ -546,6 +561,14 @@ static CGFloat itemMargin = 5;
         } else {
             // 2. select:check if over the maxImagesCount / 选择照片,检查是否超过了最大个数的限制
             if (tzImagePickerVc.selectedModels.count < tzImagePickerVc.maxImagesCount) {
+                
+                BOOL isAllowed = [strongSelf allowSelectAsset:model];
+                if (!isAllowed) {
+                    [tzImagePickerVc showAlertWithTitle:@"大于5s的视频不能发送"];
+                    return;
+                }
+
+                
                 if (tzImagePickerVc.maxImagesCount == 1 && !tzImagePickerVc.allowPreview) {
                     model.isSelected = YES;
                     [tzImagePickerVc addSelectedModel:model];
@@ -692,10 +715,20 @@ static CGFloat itemMargin = 5;
     
     _previewButton.enabled = tzImagePickerVc.selectedModels.count > 0;
     _doneButton.enabled = tzImagePickerVc.selectedModels.count > 0 || tzImagePickerVc.alwaysEnableDoneBtn;
+    if (_doneButton.enabled) {
+        [_doneButton setTitleColor:tzImagePickerVc.oKButtonTitleColorNormal forState:UIControlStateNormal];
+        _doneButton.backgroundColor = tzImagePickerVc.okButtonBackgroundColorNormal;
+    } else {
+        _doneButton.backgroundColor = tzImagePickerVc.okButtonBackgroundColorDisabled;
+        [_doneButton setTitleColor:tzImagePickerVc.oKButtonTitleColorDisabled forState: UIControlStateDisabled];
+    }
+    NSString *doneBtnTitle = [NSString stringWithFormat:@"%@(%lu)", tzImagePickerVc.doneBtnTitleStr, (unsigned long)tzImagePickerVc.selectedModels.count];
+    [_doneButton setTitle:doneBtnTitle forState:UIControlStateNormal];
+    [_doneButton setTitle:doneBtnTitle forState:UIControlStateDisabled];
     
-    _numberImageView.hidden = tzImagePickerVc.selectedModels.count <= 0;
-    _numberLabel.hidden = tzImagePickerVc.selectedModels.count <= 0;
-    _numberLabel.text = [NSString stringWithFormat:@"%zd",tzImagePickerVc.selectedModels.count];
+//    _numberImageView.hidden = tzImagePickerVc.selectedModels.count <= 0;
+//    _numberLabel.hidden = tzImagePickerVc.selectedModels.count <= 0;
+//    _numberLabel.text = [NSString stringWithFormat:@"%zd",tzImagePickerVc.selectedModels.count];
     
     _originalPhotoButton.enabled = tzImagePickerVc.selectedModels.count > 0;
     _originalPhotoButton.selected = (_isSelectOriginalPhoto && _originalPhotoButton.enabled);
@@ -975,6 +1008,19 @@ static CGFloat itemMargin = 5;
     }
     return indexPaths;
 }
+
+#pragma mark - 校验视频时长
+- (BOOL)allowSelectAsset:(TZAssetModel *)assetModel {
+    TZImagePickerController *tzImagePickerVc = (TZImagePickerController *)self.navigationController;
+    if (assetModel.type == TZAssetModelMediaTypeVideo && tzImagePickerVc.needCheckVideoDuration) {
+        if (assetModel.asset.duration <= tzImagePickerVc.allowedVideoDuration) {
+            return YES;
+        }
+        return NO;
+    }
+    return YES;
+}
+
 #pragma clang diagnostic pop
 
 @end

@@ -56,8 +56,10 @@
 
     // Default appearance, you can reset these after this method
     // 默认的外观，你可以在这个方法后重置
-    self.oKButtonTitleColorNormal   = [UIColor colorWithRed:(83/255.0) green:(179/255.0) blue:(17/255.0) alpha:1.0];
-    self.oKButtonTitleColorDisabled = [UIColor colorWithRed:(83/255.0) green:(179/255.0) blue:(17/255.0) alpha:0.5];
+    self.oKButtonTitleColorNormal   =  UIColor.whiteColor;
+    self.oKButtonTitleColorDisabled = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:0.5];
+    self.okButtonBackgroundColorNormal = [UIColor colorWithRed:(46/255.0) green:(169/255.0) blue:(223/255.0) alpha:1];
+    self.okButtonBackgroundColorDisabled = [UIColor colorWithRed:(41/255.0) green:(152/255.0) blue:(201/255.0) alpha:1];
     
     self.navigationBar.barTintColor = [UIColor colorWithRed:(34/255.0) green:(34/255.0)  blue:(34/255.0) alpha:1.0];
     self.navigationBar.tintColor = [UIColor whiteColor];
@@ -271,7 +273,7 @@
     self.cannotSelectLayerColor = [[UIColor whiteColor] colorWithAlphaComponent:0.8];
     self.allowCameraLocation = YES;
     
-    self.iconThemeColor = [UIColor colorWithRed:31 / 255.0 green:185 / 255.0 blue:34 / 255.0 alpha:1.0];
+    self.iconThemeColor = [UIColor colorWithRed:46 / 255.0 green:169 / 255.0 blue:223 / 255.0 alpha:1.0];
     [self configDefaultBtnTitle];
     
     CGFloat cropViewWH = MIN(self.view.tz_width, self.view.tz_height) / 3 * 2;
@@ -329,7 +331,7 @@
 }
 
 - (void)configDefaultBtnTitle {
-    self.doneBtnTitleStr = [NSBundle tz_localizedStringForKey:@"Done"];
+    self.doneBtnTitleStr = [NSBundle tz_localizedStringForKey:@"Send"];
     self.cancelBtnTitleStr = [NSBundle tz_localizedStringForKey:@"Cancel"];
     self.previewBtnTitleStr = [NSBundle tz_localizedStringForKey:@"Preview"];
     self.fullImageBtnTitleStr = [NSBundle tz_localizedStringForKey:@"Full image"];

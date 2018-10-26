@@ -134,6 +134,15 @@
 /// 默认是NO，如果设置为YES，导出视频时会修正转向（慎重设为YES，可能导致部分安卓下拍的视频导出失败）
 @property (assign, nonatomic) BOOL needFixComposition;
 
+#pragma mark - 自定义校验
+/// 是否需要检查是否长度，默认NO
+@property (assign, nonatomic) BOOL needCheckVideoDuration;
+
+/// 可以发送的最大长度， 默认0且当needCheckVideoDuration为true时才会进行校验
+@property (assign, nonatomic) NSInteger allowedVideoDuration;
+
+#pragma mark -
+
 /// The photos user have selected
 /// 用户选中过的图片数组
 @property (nonatomic, strong) NSMutableArray *selectedAssets;
@@ -210,6 +219,8 @@
 /// Appearance / 外观颜色 + 按钮文字
 @property (nonatomic, strong) UIColor *oKButtonTitleColorNormal;
 @property (nonatomic, strong) UIColor *oKButtonTitleColorDisabled;
+@property (nonatomic, strong) UIColor *okButtonBackgroundColorNormal;
+@property (nonatomic, strong) UIColor *okButtonBackgroundColorDisabled;
 @property (nonatomic, strong) UIColor *naviBgColor;
 @property (nonatomic, strong) UIColor *naviTitleColor;
 @property (nonatomic, strong) UIFont *naviTitleFont;
