@@ -564,7 +564,7 @@ static CGFloat itemMargin = 5;
                 
                 BOOL isAllowed = [strongSelf allowSelectAsset:model];
                 if (!isAllowed) {
-                    [tzImagePickerVc showAlertWithTitle:@"大于5s的视频不能发送"];
+                    [tzImagePickerVc showAlertWithTitle:tzImagePickerVc.allowedVideoDurationHintStr];
                     return;
                 }
 

@@ -141,6 +141,9 @@
 /// 可以发送的最大长度， 默认0且当needCheckVideoDuration为true时才会进行校验
 @property (assign, nonatomic) NSInteger allowedVideoDuration;
 
+/// 超出视频可发送的最大长度时的提示文字
+@property (copy,   nonatomic) NSString *allowedVideoDurationHintStr;
+
 #pragma mark -
 
 /// The photos user have selected

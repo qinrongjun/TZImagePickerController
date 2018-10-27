@@ -594,6 +594,16 @@
     [TZImageManager manager].sortAscendingByModificationDate = sortAscendingByModificationDate;
 }
 
+- (void)setNeedCheckVideoDuration:(BOOL)needCheckVideoDuration {
+    _needCheckVideoDuration = needCheckVideoDuration;
+    self.allowedVideoDuration = 5 * 60;
+}
+
+- (void)setAllowedVideoDuration:(NSInteger)allowedVideoDuration {
+    _allowedVideoDuration = allowedVideoDuration;
+    self.allowedVideoDurationHintStr = [NSString stringWithFormat:@"视频时长超出：%lds，选中失败", allowedVideoDuration];
+}
+
 - (void)settingBtnClick {
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:UIApplicationOpenSettingsURLString]];
 }
